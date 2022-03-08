@@ -1,0 +1,155 @@
+<div class="content-wrapper">
+  <div class="content-heading">
+    <div class="ml-auto">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">User</a></li>
+          <li class="breadcrumb-item"><a href="#">Staff Management</a></li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!-- START cards box-->
+  <div class="row">
+    <div class="col-xl-12 col-md-6">
+      <!-- START card-->
+      <button class="btn btn-labeled btn-secondary-blue btn-lg btn-rdius btn-rdius-13 font-bold" type="button" data-toggle="modal" data-target="#myModal"><%= t('add_user') %><span class="btn-label btn-label-right"><i class="fa fa-plus"></i></span></button>
+      <div class="table-responsive mt-3">
+        <table class="table table-bordered table-hover" id="table-ext-1">
+          <thead>
+            <tr>
+              <th class="text-danger">#</th>
+              <th class="text-danger"><%= t('name') %></th>
+              <th class="text-danger"><%= t('email') %></th>
+              <th class="text-danger"><%= t('phone_number') %></th>
+              <th class="text-danger"><%= t('authority') %></th>
+              <th class="text-danger"><%= t('status') %></th>
+              <th class="text-danger"><%= t('last_login') %></th>
+              <th class="text-danger"><%= t('setting') %></th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <% if @users.blank? %>
+              <tr><%= t('no_record_present')%></tr>
+            <% else %>
+              <% @users.each_with_index do |user, i|%>
+              <tr>
+                <td class="text-danger"><%= i %></td>
+                <td class="text-center"><%= user.full_name %></td>
+                <td><%= user.email %></td>
+                <td><%= user.mobile %></td>
+                <td><%= user.role %></td>
+                <td>
+                  <% if user.status == "Active" %>
+                    <label class="badge badge-green">Active</label> 
+                  <% elsif user.status == "Invited" %>
+                    <label class="badge badge-warning">Invited</label>
+                  <% else %>
+                    <label class="badge badge-danger">Blocked</label>
+                  <% end %>
+                </td>
+                <td><%= user.last_login_at %></td>
+                <td><%= link_to "<i class='fa fa-cog fa-2x text-danger'></i>".html_safe, setting_user_path(id: user.id) ,remote: true%></td>
+              </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card-footer">
+        <div class="d-flex">
+          <div>
+            <nav>
+              <ul class="pagination pagination-sm">
+                <li class="page-item">
+                <%= will_paginate @users %>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <% if false %>
+          <div class="ml-auto">
+            <div class="dataTables_info" id="datatable1_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>
+          </div>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- END cards box-->
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h4 class="modal-title text-center" id="myModalLabel"><%= t('add_user') %></h4>
+        <button class="close close-L" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <%= form_with model: @user do |f| %>
+        <div class="mt-3">
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label"><%= t('name') %></label>
+            <div class="col-md-10">
+              <%= f.text_field :full_name, class: "form-control text-center", placeholder: t('name') %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label"><%= t('email') %></label>
+            <div class="col-md-10">
+              <%= f.text_field :email, class: "form-control text-center", placeholder: t('email') %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label"><%= t('phone_number') %></label>
+            <div class="col-md-10">
+              <%= f.text_field :mobile, class: "form-control text-center", placeholder: t('phone_number') %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label"><%= t(' authority_designation') %></label>
+            <div class="col-md-10">
+              <%= f.select :role, options_for_select(User.roles.keys), { include_blank: true},class: "custom-select custom-select-sm" %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label"><%= t('status') %></label>
+            <div class="col-md-10">
+              <% status_options =  User.statuses.keys %>
+              <%= f.select :user_id, options_for_select(status_options), { include_blank: true},class: "custom-select custom-select-sm text-center" %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label "><%= t('create_password') %></label>
+            <div class="col-md-10">
+              <%= f.password_field :password, class: "form-control text-center", placeholder: t('create_password') %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-lg-12 text-center">
+              <div class="sub-button">
+                <%= button_tag( :class => "btn btn-labeled btn-secondary-blue btn-rdius btn-rdius-13 font-bold") do %>
+                  Add <span class='btn-label btn-label-right'><i class='fa fa-plus'></i></span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div id="edit-modal"></div>
+<div id="user-action"></div>
+<div id="detail-modal"></div>
