@@ -10,15 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_02_180511) do
+ActiveRecord::Schema.define(version: 2022_06_07_172839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
   create_table "book_files", force: :cascade do |t|
-    t.string "book_cover"
-    t.string "audio_file"
-    t.string "short_audio"
     t.bigint "book_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -29,14 +54,18 @@ ActiveRecord::Schema.define(version: 2022_02_02_180511) do
     t.string "title"
     t.string "author_name"
     t.string "body"
-    t.integer "book_duration", default: 0
+    t.decimal "book_duration", default: "0.0"
     t.string "reason_for_rejection"
     t.integer "status", default: 0
     t.integer "listen_count", default: 0
-    t.bigint "user_id"
+    t.datetime "last_listening_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_books_on_user_id"
+    t.integer "audio_type", default: 0
+    t.integer "language", default: 0
+    t.string "arabic_author_name"
+    t.string "arabic_title"
+    t.string "arabic_body"
   end
 
   create_table "books_categories", id: false, force: :cascade do |t|
@@ -51,10 +80,12 @@ ActiveRecord::Schema.define(version: 2022_02_02_180511) do
     t.string "name"
     t.string "city"
     t.string "address"
+    t.string "communicate_with"
     t.float "latitude"
     t.float "longitude"
     t.string "location"
     t.string "phone_number"
+    t.integer "status", default: 0
     t.integer "listening_count", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -77,14 +108,15 @@ ActiveRecord::Schema.define(version: 2022_02_02_180511) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
+    t.string "arabic_name"
     t.integer "status", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "operations", force: :cascade do |t|
-    t.integer "number"
-    t.string "listening_status"
+    t.string "number"
+    t.decimal "listening_status"
     t.datetime "listening_time"
     t.string "rating"
     t.string "note"
@@ -92,6 +124,7 @@ ActiveRecord::Schema.define(version: 2022_02_02_180511) do
     t.bigint "booth_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "language", default: 0
     t.index ["book_id"], name: "index_operations_on_book_id"
     t.index ["booth_id"], name: "index_operations_on_booth_id"
   end
@@ -110,4 +143,6 @@ ActiveRecord::Schema.define(version: 2022_02_02_180511) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
 end

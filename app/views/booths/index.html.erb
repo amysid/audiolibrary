@@ -1,0 +1,172 @@
+<!-- <div class="wrapper">
+  <section class="section-container"> -->
+    <!-- Page content-->
+    <div class="content-wrapper">
+      <div class="content-heading">
+        <div class="ml-auto">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#"><%= t('booth') %></a></li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+      <!-- START cards box-->
+      <div class="row">
+        <div class="col-xl-12 col-md-6">
+          <!-- START card-->
+          <button class="btn btn-labeled btn-secondary-blue btn-lg btn-rdius btn-rdius-13 font-bold" type="button" data-toggle="modal" data-target="#myModal"><%= t('add_booth') %> <span class="btn-label btn-label-right"><i class="fa fa-plus"></i></span></button>
+          <div class="table-responsive mt-3">
+            <table class="table table-bordered table-hover" id="table-ext-1">
+              <thead>
+                <tr>
+                  <th class="text-danger">#</th>
+                  <th class="text-danger"><%= t('booth_name')%></th>
+                  <th class="text-danger"><%= t('city') %></th>
+                  <th class="text-danger"><%= t('address')%></th>
+                  <th class="text-danger"><%= t('coordinates')%></th>
+                  <th class="text-danger"><%= t('listening')%></th>
+                  <th class="text-danger"><%= t('status') %></th>
+                  <th class="text-danger"><%= t('last_listening') %></th>
+                  <th class="text-danger"><%= t('setting') %></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if @booths.blank? %>
+                  <tr><%= t('no_record_present') %></tr>
+                <% else %>
+                  <% @booths.each_with_index do |booth, i|%>
+                    <tr>
+                      <td class="text-danger"><%= (@booths.offset + i + 1)%></td>
+                      <td><%= booth.name %></td>
+                      <td><%= booth.city %></td>
+                      <td><%= booth.address %></td>
+                      <td><%= booth.latitude %>,<%= booth.longitude%></td>
+                      <td><%= listening_count_for(booth) %></td>
+                      <td><%= booth.status rescue nil %></td>
+                      <td><%= booth.operations.last.created_at rescue nil%></td>
+                      <td><%= link_to "<i class='fa fa-cog fa-2x text-danger'></i>".html_safe, setting_booth_path(id: booth.id) ,remote: true%></td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card-footer">
+            <div class="d-flex">
+              <% if false %>
+              <div>
+                <div class="dataTables_info" id="datatable1_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>
+              </div>
+              <% end %>
+              <div class="ml-auto">
+                <nav>
+                  <ul class="pagination pagination-sm">
+                    <% if false %>
+                    <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                    <% end %>
+                    <%= will_paginate @booths%>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END cards box-->
+    </div>
+<!--   </section>
+</div> -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h4 class="modal-title text-center" id="myModalLabel"><%= t('adding_booth') %></h4>
+        <button class="close close-L" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <%= form_with model: @booth do|f| %>
+        <div class="mt-3">
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label text-center"><%= t('name')%></label>
+            <div class="col-md-10">
+              <%= f.text_field :name, class: "form-control text-center", placeholder: t('name') %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label text-center"><%= t('city')%></label>
+            <div class="col-md-10">
+              <%= f.text_field :city, class: "form-control text-center", placeholder: t('city')%>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label text-center"><%= t('address')%></label>
+            <div class="col-md-10">
+              <%= f.text_field :address, class: "form-control text-center", placeholder: t("address") %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label text-center"><%= t('coordinates')%></label>
+            <div class="col-md-10">
+              <%= f.text_field :coordinate, class: "form-control text-center", placeholder: t("coordinates") %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label text-center"><%= t('communicate_with')%></label>
+            <div class="col-md-10">
+              <!-- <input class="form-control text-center" type="email" placeholder="Mohamed shihri"> -->
+              <%= f.text_field :communicate_with, class: "form-control text-center", placeholder: t("communicate_with") %>
+
+              <%#= f.select :user_id, options_for_select(User.all.pluck(:full_name, :id)), { include_blank: true},class: "custom-select custom-select-sm text-center" %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label text-center"><%= t('phone_number')%></label>
+            <div class="col-md-10">
+              <%= f.text_field :phone_number, class: "form-control text-center", placeholder: "0509050803" %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+             <label for="example-text-input" class="col-md-2 col-form-label text-center"><%= t('category_name')%></label>
+            <div class="col-md-10" data-controller='select2'>
+              <%= f.select :category_id, options_for_select(Category.all.pluck(:name, :id)), { include_blank: true},{multiple: true, id: "category-dropdown", style: "width: 33.75em;"} %>
+            </div>
+             
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-12 text-center">
+              <%= button_tag( :class => "btn btn-labeled btn-secondary-blue btn-rdius btn-rdius-13 font-bold") do %>
+                <%= t('add') %> <span class='btn-label btn-label-right'><i class='fa fa-plus'></i></span>
+              <% end %>
+            </div>
+          </div>
+
+        </div>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="edit-modal"></div>
+<div id="booth-action"></div>
+<div id="detail-modal"></div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#category-dropdown").select2();
+  })
+</script>

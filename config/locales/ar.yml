@@ -1,0 +1,154 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# The following keys must be escaped otherwise they will not be retrieved by
+# the default I18n backend:
+#
+# true, false, on, off, yes, no
+#
+# Instead, surround them with single quotes.
+#
+# en:
+#   'true': 'foo'
+#
+# To learn more, please read the Rails Internationalization guide
+# available at https://guides.rubyonrails.org/i18n.html.
+
+ar:
+  hello: "AR Hello world"
+  user_name: "AR Username"
+  password: "AR Password"
+  confirm_password: "AR Confirm Password"
+  update_password: "AR Update Password"
+  login: "AR login"
+  forgot_password: "AR Forgot password?"
+  dashboard: "AR Dashboard"
+  users: "AR users"
+  audio_books: "AR Audio Books"
+  booths: "AR Booths"
+  operations: "AR Operations"
+  category: "AR Category"
+  user_not_present: "AR User not present!"
+  invitation_link: "AR Invitation Link"
+  logout_confirm_msg: "AR Are You sure you want to logout?"
+  add_user: "AR Add User"
+  name: "AR Name"
+  email: "AR Email"
+  phone_number: "AR Phone Number"
+  authority: "AR Authority"
+  status: "AR Status"
+  last_login: "AR Last Login"
+  setting: "AR Setting"
+  no_record_present: "AR No Record Found!"
+  category_name: "AR Category Name"
+  booth_location: "AR Booth Location"
+  data_of_category_creation: "AR Date of Category Creation"
+  booth_name: "AR Booth Name"
+  city: "AR City"
+  address: "AR Address"
+  coordinates: "AR Coordinates"
+  listening: "AR Listening"
+  last_listening: "AR Last Listening"
+  adding_booth: "AR Adding Booth"
+  communicate_with: "AR Communicate With"
+  add_category: "AR Add Category"
+  category_created_successfully: "AR Category Created Successfully"
+  category_updated_successfully: "AR Category Updated Successfully"
+  add: "AR Add"
+  update: "AR Update"
+  user_category_record_errors: "AR Either User or Category record is not valid"
+  add_book: "AR Add Book"
+  book_title: "AR Book title"
+  author_name: "AR Author Name"
+  duration_of_the_book_in_minutes: "AR Duration of the book in minutes"
+  book_duration: "AR Book duration (in Minutes)"
+  about_the_book: "AR About the Book"
+  audio_book_files: "AR Audio Book Files"
+  book_cover: "AR Book Cover"
+  audio_file: "AR Audio File"
+  short_audio: "AR Short Audio"
+  category_not_valid: "AR Category Not Valid!"
+  book_created_successfully: "AR Book Created Successfully"
+  book_updated_successfully: "AR Book Updated Successfully"
+  authority_designation: "AR Authority/ Designation"
+  create_password: "AR Create Password"
+  category_destroy_message: "AR Category Destroy Successfully!"
+  update_booth: "AR Update Booth"
+  booth_destroy_message: "AR Booth Destroy Successfully!"
+  update_user: "AR Update User"
+  update_book: "AR Update Book"
+  arabic_name: "AR Arabic Name"
+  icon: "AR Icon"
+  booth_not_found: "AR Booth Not found!"
+  category_names: "AR Category Names"
+  operation_number: "AR Operation Number"
+  listening_status: "AR Listening Status (In Minutes)"
+  listening_time: "AR Listening time"
+  ratings: "AR Ratings"
+  notes: "AR Notes"
+  booth: "AR Booth"
+  add_booth: "AR Add Booth"
+  booth_details: "AR Booth Details"
+  user: "AR User"
+  staff_management: "AR Staff Management"
+  user_details: "AR User Details"
+  home: "AR Home"
+  library: "AR Library"
+  adding_book: "AR Adding Book"
+  book_details: "AR Book Details"
+  category_details: "AR Category Details"
+  number: "AR Number"
+  action: "AR Action"
+  book_name: "AR Book Name"
+  enter_book_name: "AR Enter Book Name"
+  qr_code: "AR Qr Code"
+  back: "AR Back"
+  categories: "AR Categories"
+  trending_now: "AR Trending now"
+  added_recently: "AR Added recently"
+  overview: "AR Overview"
+  time: "AR Time"
+  author: "AR Author"
+  play_book_preview: "AR Play book preview"
+  top_matches: "AR Top matches"
+  all: "AR All"
+  short_audiobooks: "AR Short audiobooks"
+  long_audiobook: "AR Long audiobook"
+  audio_type: "AR Audio Type"
+  book_deleted_successfully: "AR Book Delete Successfully!"
+  white_icon: "AR White Icon"
+  book_arabic_title: "AR Arabic Title"
+  book_arabic_author_name: "AR Arabic Author Name"
+  about_the_book_arabic: "AR About the Book in Arabic"
+  book_summary: "AR Book Summary"
+  audio_books: "AR Audiobooks"
+  total_streaming_time: "AR Total streaming time"
+  authors: "AR Authors"
+  long_audiobooks: "AR Long AudioBooks"
+
+
+
+
+
+
+
+
+
+
+
+

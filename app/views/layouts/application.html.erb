@@ -10,9 +10,53 @@
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js", async: true %>
+
   </head>
 
   <body>
-    <%= yield %>
+    <% if notice %>
+      <p class="alert alert-success"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p class="alert alert-danger"><%= alert %></p>
+    <% end %>
+    <% if not params[:controller] == "sessions" ||  params["controller"].start_with?("web") %>
+    <%# if current_user.present? %>
+      <div class="wrapper">
+        <% if params["locale"].blank? || params[:locale] == "en" %>
+          <%= render 'layouts/en_header' %>
+          <%= render 'layouts/en_side_menu_layout'%>
+          <section class="section-container">
+            <%= yield %>
+          </section>
+          <%= render 'layouts/footer'%>
+        <% elsif params[:locale] == "ar" %>
+          <%= render 'layouts/ar_header' %>
+          <%= render 'layouts/ar_side_menu_layout'%>
+          <section class="section-container-R">
+            <%= yield %>
+          </section>
+          <%= render 'layouts/footer'%>
+        <% end %>
+      </div>
+      <% else %>
+        <%= yield %>
+      <% end %>
+    <!-- put yield in a div Wrapper class beacuse all header and navbar define in wrapper class -->
+    <!-- And also section-container is contain different class for css so that's why section is also define here -->
   </body>
 </html>
+<script type="text/javascript">
+  $(document).ready(function(){
+  $(".sidebar-nav>li").each(function() {
+    var navItem = $(this);
+    if (navItem.find("a").attr("href") == location.pathname) {
+      navItem.addClass("active");
+    }
+  });
+  setTimeout(function(){
+      $(".alert").hide();
+    }, 10000);  
+});  
+</script>

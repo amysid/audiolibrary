@@ -1,0 +1,134 @@
+<% if false %>
+<div class="booth-show">
+  <div class="row">
+    <div class="col-xl-12 col-md-6">  
+      <div class="table-responsive mt-3">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xl-12 col-md-6">  
+      <%= link_to "Start", web_booth_books_path(booth_id: @booth.number), class: "btn btn-block btn-danger btn-login mt-4", remote: true %>
+    </div>
+  </div>
+</div>
+<% end %>
+
+<div class="book-index-page"></div>
+<div class="book-show-page"></div>
+
+<div class="booth-show">
+<section class="login-wrapper">
+    <div class="login-overlay">
+    <div class="css-1jx6fr94">
+    <div class="css-1nz39sc">
+        <div class="css-i54jlg">
+            <div class="right">
+                <div class="tickerListContainer">
+                    <div class="tickerList">
+                        <div>
+                            <div class="book-cov6h6">
+                                <a href="#">
+                                    <% img_url = @books.first.book_files.first.book_cover_file.url rescue nil %>
+                                    <img src="<%= img_url %>"  />
+                                </a>
+                            </div>
+                            <div class="book-cov6h6">
+                                <a href="#">
+                                <% img_url = @books.second.book_files.first.book_cover_file.url rescue nil %>
+                                <img src="<%= img_url %>"  />
+                                </a>
+                            </div>
+                        </div>
+                                                <div>
+                            <div class="book-cov6h6">
+                                <a href="#">
+                                    <% img_url = @books.third.book_files.first.book_cover_file.url rescue nil %>
+                                    <img src="<%= img_url %>"  />
+                                </a>
+                            </div>
+                            <div class="book-cov6h6">
+                                <a href="#">
+                                <% img_url = @books.fourth.book_files.first.book_cover_file.url rescue nil %>
+                                <img src="<%= img_url %>"  />
+                                </a>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="book-cov6h6">
+                                <a href="#">
+                                    <% img_url = @books.fifth.book_files.first.book_cover_file.url rescue nil %>
+                                    <img src="<%= img_url %>"  />
+                                </a>
+                            </div>
+                            <div class="book-cov6h6">
+                                <a href="#">
+                                <% img_url = @books[5].book_files.first.book_cover_file.url rescue nil %>
+                                <img src="<%= img_url %>"  />
+                                </a>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="book-cov6h6">
+                                <a href="#">
+                                    <% img_url = @books[6].book_files.first.book_cover_file.url rescue nil %>
+                                    <img src="<%= img_url %>"  />
+                                </a>
+                            </div>
+                            <div class="book-cov6h6">
+                                <a href="#">
+                                <% img_url = @books[7].book_files.first.book_cover_file.url rescue nil %>
+                                <img src="<%= img_url %>"  />
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="login-box col-md-12">
+                <div class="theme-form login-form text-center">
+                    <div>
+                        <img class="logo" src="<%= asset_url('logo-new.png') %>">
+                        <h1>مكتبة الكتب الصوتية</h1>
+                        <h1 class="mt-5">Audiobooks Library</h1>
+                    </div>
+
+                    <div class="form-group button-sec">
+                   
+                        <div class="mb-5">
+                        <%= link_to "ابدأ الخدمة", web_booth_books_path(booth_id: @booth.number, locale: :ar), class: "btn btn-primary btn-theme", remote: true %>
+                        </div>
+                        <div >
+                        <%= link_to "Start", web_booth_books_path(booth_id: @booth.number), class: "btn btn-primary btn-theme", remote: true %>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <footer style="height:104px;padding: 37px 0;">
+    <div class="container">
+        <div class="row align-items-center">
+        <div class="col-md-3">
+                        <a href="">
+                            <img class="img-fluid" src="<%= asset_url('footer-logo-white.png') %>">
+
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+    </footer>
+</section>
+</div>

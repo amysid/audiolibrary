@@ -1,0 +1,361 @@
+<div class="content-wrapper">
+  <div class="content-heading">
+      <div class="ml-auto">
+          <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#"><%= t('home') %></a></li>
+                  <li class="breadcrumb-item"><a href="#"><%= t('library') %></a></li>
+              </ol>
+          </nav>
+      </div>
+  </div>
+  <!-- START cards box-->
+
+  <div class="row">
+    <div class="col-xl-12 col-md-6">
+
+      <!-- START card-->
+      <% if current_user.role != "Approver" %>
+        <button class="btn btn-labeled btn-secondary-blue btn-lg btn-rdius btn-rdius-13 font-bold" type="button" data-toggle="modal" data-target="#myModal"><%= t('add_book') %><span class="btn-label btn-label-right"><i class="fa fa-plus"></i></span></button>
+      <% end %>
+      <div class="table-responsive mt-3">
+        <table class="table table-bordered table-hover" id="table-ext-1">
+          <thead>
+            <tr>
+              <th class="text-danger">#</th>
+              <th class="text-danger"><%= t('book_title')%></th>
+              <th class="text-danger"><%= t('book_arabic_title')%></th>
+              <th class="text-danger"><%= t('book_arabic_author_name')%></th>
+              <th class="text-danger"><%= t('author_name') %></th>
+              <th class="text-danger"><%= t('category') %></th>
+              <th class="text-danger"><%= t('duration_of_the_book_in_minutes') %></th>
+              <th class="text-danger"><%= t('listening') %></th>
+              <th class="text-danger"><%= t('status') %></th>
+              <th class="text-danger"><%= t('language') %></th>
+              <th class="text-danger"><%= t('last_listening') %></th>
+              <th class="text-danger"><%= t('setting') %></th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <% if @books.blank? %>
+              <tr><%= t('no_record_present') %></tr>
+            <% else %>
+              <% @books.each_with_index do|book, i|  %>
+                <tr>
+                  <td class="text-danger"><%= (@books.offset + i + 1)%></td>
+                  <td><%= book.title %></td>
+                  <td><%= book.arabic_title %></td>
+                  <td><%= book.arabic_author_name %></td>
+                  <td class="text-center"><%= book.author_name %>
+                  </td>
+                  <td>
+                    <div class="pl-2 pr-2">
+                      <%= select_tag t('category'), options_for_select(book.categories.pluck(:name, :id)), class: "custom-select custom-select-sm text-center"%>
+                    </div>
+                  </td>
+                  <td><%= Time.at(book.book_duration.to_f).utc.strftime("%H:%M:%S") %></td>
+                  <td><%= total_time_in_minute(book) %></td>
+                  <td>
+                      <label><%= book.status %></label></td>
+                  <td><%= book.language %></td>
+                  <td><%= book.last_listening_at %></td>
+                  <td><%= link_to "<i class='fa fa-cog fa-2x text-danger'></i>".html_safe, setting_book_path(id: book.id) ,remote: true%></td>
+                </tr>
+              <% end %>
+            <% end%>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card-footer">
+        <div class="d-flex">
+          <% if false %>
+          <div>
+            <div class="dataTables_info" id="datatable1_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>
+          </div>
+          <% end %>
+          <div class="ml-auto">
+            <nav>
+              <ul class="pagination pagination-sm">
+                <% if false %>
+                <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item active"><a class="page-link" href="#">5</a></li>
+                <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                <% end %>
+                <%= will_paginate @books%>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-lgg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h4 class="modal-title text-center" id="myModalLabel"><%= t('adding_book') %></h4>
+        <button class="close close-L" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+
+        <div class="mt-3">
+          <%= nested_form_for @book, html: {id: "book-form"} do |f| %>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label"><%= t('book_title') %></label>
+            <div class="col-md-10">
+              <%= f.text_field :title, class: "form-control text-center",placeholder: t('book_title') %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label"><%= t('book_arabic_title') %></label>
+            <div class="col-md-10">
+              <%= f.text_field :arabic_title, class: "form-control text-center",placeholder: t('book_arabic_title') %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label"><%= t('author_name') %></label>
+            <div class="col-md-10">
+              <%= f.text_field :author_name, class:"form-control text-center", placeholder: t('author_name') %>
+              <%#= f.select :user_id, options_for_select(User.all.pluck(:full_name, :id)), { include_blank: true},class: "custom-select custom-select-sm" %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label"><%= t('book_arabic_author_name') %></label>
+            <div class="col-md-10">
+              <%= f.text_field :arabic_author_name, class:"form-control text-center", placeholder: t('book_arabic_author_name') %>
+              <%#= f.select :user_id, options_for_select(User.all.pluck(:full_name, :id)), { include_blank: true},class: "custom-select custom-select-sm" %>
+            </div>
+          </div>
+
+
+          <div class="form-group row">
+            <label class="col-md-2 col-form-label pr-0"><%= t('book_duration') %></label>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-lg-12">
+                  <%= f.text_field :book_duration, class: "form-control text-center book-duration", placeholder: t('book_duration'), readonly: true %>
+                </div>
+              </div>
+            </div>
+
+            <label class="col-md-2 col-form-label"><%= t('category') %></label>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-lg-12" data-controller="select2">
+                  <%= f.select :category_ids, options_for_select(Category.all.pluck(:name, :id)), { include_blank: true},{multiple: true, id: "category-dropdown", style: "width: 33.75em;"} %>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label"><%= t('audio_type') %></label>
+            <div class="col-md-10">
+              <%= f.select :audio_type, options_for_select([["Short",'Short'],["Long", "Long"]]), { include_blank: true}, {class: "form-control"} %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label"><%= t('language') %></label>
+            <div class="col-md-10">
+              <%= f.select :language, options_for_select([["English",'English'],["Arabic", "Arabic"]]), { include_blank: true}, {class: "form-control"} %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label"><%= t('about_the_book') %></label>
+            <div class="col-md-10">
+              <%= f.text_area :body, class: "form-control text-center", placeholder: t('about_the_book') %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label"><%= t('about_the_book_arabic') %></label>
+            <div class="col-md-10">
+              <%= f.text_area :arabic_body, class: "form-control text-center", placeholder: t('about_the_book_arabic') %>
+            </div>
+          </div>
+
+          <h4 class="modal-title text-center mb-4" id="H1"><%= t('audio_book_files') %></h4>
+          <%= f.fields_for :book_files do |bk| %>
+          <div class="form-group row">
+            <label class="col-md-2 col-form-label pr-0"><%= t('book_cover') %></label>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="form-group text-truncate"> 
+                    <% if false %>
+                    <input type="file" name="img[]" class="file">
+                    <div class="input-group mb-3">
+                      <div class="input-group-append">
+                        <a class="browse input-group-text btn btn-default bg-white file-bor-rad bor-R" id="basic-addon2"><i class="fas fa-paperclip"></i></a>
+                      </div>
+                      <%= bk.file_field :book_cover_file, class: "form-control bg-white", placeholder: "upload file" %>
+                      <!-- <input type="text" class="form-control bg-white" disabled placeholder="Upload File" aria-label="Upload File" aria-describedby="basic-addon1"> -->
+                    </div>
+                    <% end %>
+                    <%= bk.file_field :book_cover_file,id: "book-cover-field", class: "", placeholder: "upload file" %>
+                    <div class="upload-preview" style="margin-top: 10px;">
+                      <img style="width: 50%; height: 50%;"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <label class="col-md-2 col-form-label"><%= t("audio_file") %></label>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="form-group text-truncate">
+                    <% if false %>
+                    <input type="file" name="img[]" class="file">
+                    <div class="input-group mb-3">
+                      <div class="input-group-append">
+                        <a class="browse input-group-text btn btn-default bg-white file-bor-rad bor-R" id="A1"><i class="fas fa-paperclip"></i></a>
+                      </div>
+                      <%= bk.file_field :audio, class: "form-control bg-white", placeholder: "upload file" %>
+                      <!-- <input type="text" class="form-control bg-white" disabled placeholder="Upload File" aria-label="Upload File" aria-describedby="basic-addon1"> -->
+                    </div>
+                    <% end %>
+                    <%= bk.file_field :audio, class: "", id: "book-audio-field", placeholder: "upload file" %>
+                    <div class="upload-audio-preview" style="margin-top: 10px;">
+                      <audio  controls="controls" id="long_audio"></audio>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-md-2 col-form-label"></label>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-lg-12 text-center">
+                  <%= button_tag( :class => "btn btn-labeled btn-secondary-blue btn-rdius btn-rdius-13 font-bold") do %>
+                    <%= t('add') %> <span class='btn-label btn-label-right'><i class='fa fa-plus'></i></span>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <label class="col-md-2 col-form-label"><%= t("short_audio") %></label>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <% if false %>
+                    <input type="file" name="img[]" class="file">
+                    <div class="input-group mb-3">
+                      <div class="input-group-append">
+                          <a class="browse input-group-text btn btn-default bg-white file-bor-rad bor-R" id="A3"><i class="fas fa-paperclip"></i></a>
+                      </div>
+                      <%= bk.file_field :short_audio_file, class: "form-control bg-white", placeholder: "upload file" %>
+                      <!-- <input type="text" class="form-control bg-white" disabled placeholder="Upload File" aria-label="Upload File" aria-describedby="basic-addon1"> -->
+                    </div>
+                    <% end %>
+                    <%= bk.file_field :short_audio_file, class: "", id: "book-short-audio-field", placeholder: "upload file" %>
+                    <div class="upload-short-audio-preview" style="margin-top: 10px;">
+                      <audio  controls="controls" id="short_audio"></audio>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <% end %>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="edit-modal"></div>
+<div id="book-action"></div>
+<div id="detail-modal"></div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#category-dropdown").select2()
+
+    var preview = $(".upload-preview img");
+    var audio_preview = $(".upload-audio-preview audio")
+    var short_audio_preview = $(".upload-short-audio-preview audio")
+
+
+    $("#book-cover-field").change(function(event){
+       var input = $(event.currentTarget);
+       var file = input[0].files[0];
+       var reader = new FileReader();
+       reader.onload = function(e){
+           image_base64 = e.target.result;
+           preview.attr("src", image_base64);
+       };
+       reader.readAsDataURL(file);
+    });
+
+    $("#book-audio-field").change(function(event){
+      var audio_input = $(event.currentTarget);
+      var file = audio_input[0].files[0]
+      var reader = new FileReader();
+      reader.onload = function(e){
+        audio_base64 = e.target.result;
+        audio_preview.attr("src", audio_base64);
+      };
+      reader.readAsDataURL(file);
+      setTimeout(function() {
+        // duration in second
+        var duration = $("#long_audio")[0].duration;
+        duration = Number(duration)
+        var minute = Math.floor( duration % 3600 / 60);
+        var second = Math.floor(duration % 3600 % 60);
+        var time = Number(minute + "." + second);
+        $(".book-duration").val(time);
+      }, 2000);
+    });
+
+    $("#book-short-audio-field").change(function(event){
+      var audio_input = $(event.currentTarget);
+      var file = audio_input[0].files[0]
+      var reader = new FileReader();
+      reader.onload = function(e){
+        audio_base64 = e.target.result;
+        short_audio_preview.attr("src", audio_base64);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    $("#book-form").submit(function(e){
+      var duration = $("#long_audio")[0].duration;
+      $(".book-duration").val(duration);
+    });
+
+  });
+
+
+  // function secondsToHms(d) {
+  //   d = Number(d);
+  //   var h = Math.floor(d / 3600);
+  //   var m = Math.floor(d % 3600 / 60);
+  //   var s = Math.floor(d % 3600 % 60);
+
+  //   var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+  //   var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
+  //   var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+  //   return hDisplay + mDisplay + sDisplay; 
+  // }
+
+</script>

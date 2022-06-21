@@ -1,0 +1,65 @@
+<div class="content-wrapper">
+  <div class="content-heading">
+    <div class="ml-auto">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#"><%= t('category')%></a></li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!-- START cards box-->
+  <div class="row">
+    <div class="col-xl-12 col-md-6">
+      <div class="table-responsive mt-3">
+        <table class="table table-bordered table-hover" id="table-ext-1-operation">
+          <thead>
+            <tr>
+              <th class="text-danger">#</th>
+              <th class="text-danger"><%= t('operation_number') %> </th>
+              <th class="text-danger"><%= t('booth_name') %> </th>
+              <th class="text-danger"><%= t('book_name') %></th>
+              <th class="text-danger"><%= t('city') %></th>
+              <th class="text-danger"><%= t('listening_status') %></th>
+              <th class="text-danger"><%= t('listening_time')%></th>
+              <th class="text-danger"><%= t('ratings') %></th>
+              <th class="text-danger"><%= t('notes') %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @operations.blank? %>
+              <tr><%= t('no_record_present') %></tr>
+            <% else %>
+              <% @operations.each_with_index do|operation, i|  %>
+                <tr>
+                  <td class="text-danger"><%= (@operations.offset + i + 1) %></td>
+                  <td><%= operation.number %></td>
+                  <td><%= operation.booth.name %></td>
+                  <td><%= operation.book.title %></td>
+                  <td><%= operation.booth.city %></td>
+                  <td><%= Time.at(operation.listening_status.to_f).utc.strftime("%H:%M:%S") %>/ <%= Time.at(operation.book.book_duration.to_f).utc.strftime("%H:%M:%S") %></td>
+                  <td><%= operation.listening_time %></td>
+                  <td><%= operation.rating %></td>
+                  <td><%= operation.note %></td>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card-footer">
+        <div class="d-flex">
+          <div class="ml-auto">
+            <nav>
+              <ul class="pagination pagination-sm">
+                <%= will_paginate @operations %>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END cards box-->
+</div>
