@@ -99,11 +99,11 @@
               <% end %>
             <% end %>
 
-            <%= link_to accessibility_mode_web_booth_books_path(booth_id: @booth.number), remote: true, class:"btn btn-light-grey btn-footer isDisabled" do %>
+            <%= link_to accessibility_mode_web_booth_books_path(booth_id: @booth.number), remote: true, class:"btn btn-light-grey btn-footer" do %>
               <img src="<%= asset_url('access-white.png') %>">
             <% end %>
 
-           <%= link_to  children_mode_web_booth_books_path(booth_id: @booth.number), class: "btn btn-light-grey btn-footer isDisabled", remote: true do %>
+           <%= link_to  children_mode_web_booth_books_path(booth_id: @booth.number), class: "btn btn-light-grey btn-footer", remote: true do %>
               <img src="<%= asset_url('baby-white.png') %>">
             <% end %>
           </div>
@@ -112,34 +112,26 @@
       </div>
     </footer>
   </div>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  
+  <script>
+    (function ($){
+      $.mCustomScrollbar.defaults.scrollButtons.enable = true; //enable scrolling buttons by default
+      $.mCustomScrollbar.defaults.axis = "yx"; //enable 2 axis scrollbars by default
 
-    <script>
-        // (function ($) {
-        //     $(window).on("load", function () {
-
-
-                $.mCustomScrollbar.defaults.scrollButtons.enable = true; //enable scrolling buttons by default
-                $.mCustomScrollbar.defaults.axis = "yx"; //enable 2 axis scrollbars by default
-
-                $("#content-l").mCustomScrollbar();
-
-                $("#content-rd").mCustomScrollbar({ theme: "rounded-dark" });
-
-                $(".all-themes-switch a").click(function (e) {
-                    e.preventDefault();
-                    var $this = $(this),
-            rel = $this.attr("rel"),
-            el = $(".content");
-                    switch (rel) {
-                        case "toggle-content":
-                            el.toggleClass("expanded-content");
-                            break;
-                    }
-                });
-
-        //     });
-        // })(jQuery);
+      $("#content-l").mCustomScrollbar();
+      $("#content-rd").mCustomScrollbar({ theme: "rounded-dark" });
+      $(".all-themes-switch a").click(function (e) {
+        e.preventDefault();
+        var $this = $(this),
+        rel = $this.attr("rel"),
+        el = $(".content");
+        switch (rel) {
+          case "toggle-content":
+          el.toggleClass("expanded-content");
+          break;
+        }
+      });
+    })(jQuery);
   </script>
 
  
