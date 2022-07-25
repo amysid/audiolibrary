@@ -91,11 +91,22 @@
               <img src="<%= asset_url('back-white.png') %>">
             <% end %>
             <% if params[:locale] == "en" || params[:locale] == nil %>
-              <%= link_to category_search_web_booth_books_path(booth_id: @booth.number, category_id: @categories.first.id, locale: :ar), class:"btn btn-light-grey btn-footer", remote: true do %>
+              <% if params[:action] == "accessibility_mode" %>
+                <% url_path = accessibility_mode_web_booth_books_path(booth_id: @booth.number, locale: :ar) %>
+              <% else %>
+                <% url_path = children_mode_web_booth_books_path(booth_id: @booth.number, locale: :ar) %>
+              <% end %>
+              <%= link_to url_path, class:"btn btn-light-grey btn-footer", remote: true do %>
                 <img src="<%= asset_url('arabic.png') %>">
               <% end %>
             <% else %>
-              <%= link_to category_search_web_booth_books_path(booth_id: @booth.number, category_id: @categories.first.id), class:"btn btn-light-grey btn-footer", remote: true do %>
+              <% if params[:action] == "accessibility_mode" %>
+                <% url_path = accessibility_mode_web_booth_books_path(booth_id: @booth.number) %>
+              <% else %>
+                <% url_path = children_mode_web_booth_books_path(booth_id: @booth.number) %>
+              <% end %>
+
+              <%= link_to url_path, class:"btn btn-light-grey btn-footer", remote: true do %>
                 <img src="<%= asset_url('eng-white.png') %>">
               <% end %>
             <% end %>
