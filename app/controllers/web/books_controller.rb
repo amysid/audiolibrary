@@ -1,6 +1,6 @@
 class Web::BooksController < Web::WebApplicationController
-  before_action :set_booth
-  before_action :fetch_categories
+  before_action :set_booth, except: [:all_books, :play_book_for_blind]
+  before_action :fetch_categories, except: [:all_books, :play_book_for_blind]
 
   def index
     book_ids = @booth.books.pluck(:book_id)
@@ -9,6 +9,17 @@ class Web::BooksController < Web::WebApplicationController
     book_ids_from_operation = Operation.where(booth_id: @booth.id).pluck(:book_id)
     @trending_books = @books.where(id: book_ids_from_operation)
     @trending_books = @books if @trending_books.blank?
+  end
+
+  def all_books
+    @books = Book.includes(:book_files).where(status: "Published").order('created_at desc')
+  end
+
+  def play_book_for_blind
+    book = Book.find_by(id: params[:id])
+    booth = Booth.where(name: "Blind").first_or_create
+    operation = Operation.create(book_id: book.id, booth_id: booth.id)
+    redirect_to media_files_web_operation_path(id: operation.number)
   end
 
   def search 
